@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Website pembelajaran interaktif Multimedia, Produksi, Diseminasi, dan Prompting untuk SMK Jurusan Kriya Kulit." />
+  <title>Multimedia & Prompting AI — Kriya Kulit</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- AOS: scroll animation -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root{
+      --bg:#0b0b0e;
+      --bg-soft:#121217;
+      --card:#17171e;
+      --card-2:#1d1d25;
+      --text:#f6f2eb;
+      --muted:#a7a4a0;
+      --line:rgba(255,255,255,.08);
+      --accent:#d49b62;
+      --accent-2:#f2c28f;
+      --success:#49d49b;
+      --danger:#ff6b73;
+      --shadow:0 24px 60px rgba(0,0,0,.35);
+      --radius:24px;
+      --navh:76px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"DM Sans",system-ui,sans-serif;
+      background:
+        radial-gradient(circle at 80% 0%, rgba(212,155,98,.12), transparent 28%),
+        radial-gradient(circle at 0% 30%, rgba(242,194,143,.07), transparent 25%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.65;
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
+    button,input,textarea,select{font:inherit}
+    img{max-width:100%}
+
+    /* Ambient background */
+    .grain{
+      position:fixed;inset:0;pointer-events:none;z-index:-1;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+      mix-blend-mode:soft-light;
+    }
+    .blob{position:fixed;border-radius:50%;filter:blur(70px);opacity:.16;z-index:-1;pointer-events:none}
+    .blob.one{width:320px;height:320px;background:#ba7d44;top:10%;left:-100px;animation:float 12s ease-in-out infinite}
+    .blob.two{width:260px;height:260px;background:#f0b77e;right:-90px;bottom:8%;animation:float 15s ease-in-out infinite reverse}
+    @keyframes float{50%{transform:translate3d(30px,-25px,0) scale(1.08)}}
+
+    /* Navbar */
+    .navbar{
+      position:sticky;top:0;z-index:1000;height:var(--navh);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 clamp(16px,4vw,56px);
+      background:rgba(11,11,14,.74);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid var(--line);
+    }
+    .brand{display:flex;align-items:center;gap:12px;font-family:"Space Grotesk",sans-serif;font-weight:700;letter-spacing:-.02em}
+    .brand-mark{
+      width:40px;height:40px;border-radius:13px;display:grid;place-items:center;
+      background:linear-gradient(135deg,#f0c08d,#9d6337);
+      color:#14100c;box-shadow:0 12px 28px rgba(212,155,98,.24);
+    }
+    .navlinks{display:flex;align-items:center;gap:6px}
+    .navlinks a{
+      padding:10px 15px;border-radius:14px;color:#bbb7b2;font-weight:600;font-size:.92rem;
+      transition:.25s ease;position:relative
+    }
+    .navlinks a:hover,.navlinks a.active{background:rgba(255,255,255,.06);color:#fff}
+    .navlinks a.active:after{
+      content:"";position:absolute;left:15px;right:15px;bottom:3px;height:2px;border-radius:9px;background:var(--accent)
+    }
+    .menu-btn{display:none;background:none;border:0;color:#fff;font-size:1.2rem}
+
+    main{max-width:1220px;margin:auto;padding:0 22px 80px}
+    section{scroll-margin-top:100px}
+
+    /* Hero */
+    .hero{
+      min-height:calc(100vh - var(--navh));
+      display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding:78px 0 40px
+    }
+    .eyebrow{
+      display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border:1px solid rgba(212,155,98,.25);
+      background:rgba(212,155,98,.08);color:var(--accent-2);border-radius:99px;font-size:.8rem;font-weight:700
+    }
+    .hero h1{
+      font-family:"Space Grotesk",sans-serif;font-size:clamp(2.5rem,6vw,5.4rem);line-height:1.01;letter-spacing:-.05em;
+      margin:20px 0;color:#fff
+    }
+    .hero h1 span{color:var(--accent-2)}
+    .hero p{color:#b8b4af;max-width:680px;font-size:1.05rem}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid transparent;
+      padding:12px 17px;border-radius:15px;font-weight:700;cursor:pointer;transition:.25s ease
+    }
+    .btn-primary{background:linear-gradient(135deg,#edbb82,#b87440);color:#1c120b;box-shadow:0 12px 28px rgba(212,155,98,.22)}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(212,155,98,.28)}
+    .btn-ghost{border-color:var(--line);background:rgba(255,255,255,.025);color:#eee}
+    .btn-ghost:hover{background:rgba(255,255,255,.065)}
+    .hero-visual{
+      position:relative;min-height:420px;display:grid;place-items:center
+    }
+    .hero-card{
+      width:min(410px,100%);aspect-ratio:1/1.1;border-radius:32px;padding:28px;
+      background:
+        radial-gradient(circle at 30% 15%,rgba(255,227,190,.16),transparent 26%),
+        linear-gradient(150deg,#2a211b,#141417 58%,#0e0e11);
+      border:1px solid rgba(255,255,255,.1);
+      box-shadow:var(--shadow);transform:rotate(3deg);
+      position:relative;overflow:hidden
+    }
+    .hero-card:before{
+      content:"";position:absolute;width:220px;height:220px;border-radius:50%;right:-65px;top:-65px;
+      border:1px solid rgba(255,255,255,.08);box-shadow:0 0 0 28px rgba(255,255,255,.02),0 0 0 58px rgba(255,255,255,.012)
+    }
+    .hero-card h3{font-family:"Space Grotesk",sans-serif;font-size:2rem;margin:26px 0 8px}
+    .hero-card .mini{color:#b9afa4;font-size:.9rem}
+    .hero-bars{display:grid;gap:12px;margin-top:30px}
+    .hero-bar{height:11px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden}
+    .hero-bar span{display:block;height:100%;width:var(--w);background:linear-gradient(90deg,#d49b62,#f2c28f);border-radius:999px;animation:load 1.8s ease both}
+    @keyframes load{from{width:0}}
+
+    /* Section header */
+    .section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin:86px 0 24px}
+    .section-head .kicker{color:var(--accent-2);font-weight:800;font-size:.78rem;text-transform:uppercase;letter-spacing:.14em}
+    .section-head h2{font-family:"Space Grotesk",sans-serif;font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.04em;margin:5px 0}
+    .section-head p{max-width:620px;color:var(--muted);margin:0}
+
+    /* General cards */
+    .card{
+      background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+      border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 18px 50px rgba(0,0,0,.18)
+    }
+    .grid{display:grid;gap:16px}
+    .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+    /* Pre/Post Test */
+    .test-wrap{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px}
+    .test-card{padding:26px}
+    .test-side{padding:22px;position:sticky;top:94px;height:max-content}
+    .progress{height:10px;background:rgba(255,255,255,.07);border-radius:99px;overflow:hidden}
+    .progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#b87543,#f1bf8b);transition:.35s ease}
+    .q-meta{display:flex;justify-content:space-between;gap:12px;color:#9f9b95;font-size:.88rem;margin-bottom:12px}
+    .question{font-size:1.18rem;font-weight:700;line-height:1.5;margin:14px 0 18px}
+    .options{display:grid;gap:11px}
+    .option{
+      width:100%;text-align:left;border:1px solid rgba(255,255,255,.08);background:#111116;color:#ece9e4;
+      padding:14px 15px;border-radius:16px;cursor:pointer;transition:.22s;display:flex;gap:12px;align-items:flex-start
+    }
+    .option:hover{border-color:rgba(212,155,98,.5);transform:translateY(-1px)}
+    .option.selected{background:rgba(212,155,98,.12);border-color:rgba(242,194,143,.65)}
+    .option .letter{width:28px;height:28px;flex:0 0 28px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.05);font-weight:800}
+    .test-actions{display:flex;justify-content:space-between;gap:10px;margin-top:22px}
+    .score-box{display:none;margin-top:22px;padding:20px;border-radius:18px;background:rgba(73,212,155,.08);border:1px solid rgba(73,212,155,.24)}
+    .score-box.show{display:block;animation:pop .5s ease both}
+    @keyframes pop{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+    .score-big{font-family:"Space Grotesk";font-size:3.2rem;font-weight:700}
+    .side-stat{padding:14px 0;border-bottom:1px solid var(--line)}
+    .side-stat:last-child{border-bottom:0}
+    .side-stat small{display:block;color:#8f8b87}.side-stat strong{font-size:1.2rem}
+
+    /* Material */
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+    .tab-btn{
+      padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.03);
+      color:#bdb9b3;font-weight:700;cursor:pointer;transition:.2s
+    }
+    .tab-btn.active{background:rgba(212,155,98,.12);color:#f5d1ad;border-color:rgba(212,155,98,.35)}
+    .tab-panel{display:none}.tab-panel.active{display:block;animation:fade .35s ease}
+    @keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+    .material-card{padding:25px}
+    .material-card h3{font-family:"Space Grotesk";margin-top:0}
+    .material-card ul{padding-left:19px;color:#c4c0bb}
+    .material-card li{margin:8px 0}
+    .info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:16px}
+    .info-chip{padding:16px;border-radius:18px;background:rgba(255,255,255,.035);border:1px solid var(--line)}
+    .info-chip i{color:var(--accent-2);font-size:1.2rem}
+    .info-chip strong{display:block;margin:8px 0 3px}
+    .info-chip span{color:#9e9b95;font-size:.86rem}
+    .prompt-grid{display:grid;grid-template-columns:1fr;gap:18px}
+    .prompt-card{padding:22px}
+    .prompt-card .num{font-size:.76rem;color:#c9935f;font-weight:800;letter-spacing:.12em}
+    .prompt-card h4{margin:7px 0 5px;font-family:"Space Grotesk"}
+    .prompt-def{color:#e0d6c9;font-weight:600;margin:5px 0 10px}
+    .prompt-example{
+      background:rgba(212,155,98,.1);
+      border-left:3px solid var(--accent);
+      padding:12px 14px;
+      border-radius:0 12px 12px 0;
+      margin:12px 0;
+      font-size:.92rem;
+    }
+    .prompt-example strong{color:var(--accent-2)}
+    .prompt-example p{margin:5px 0 0;color:#d1c9c0;white-space:pre-line}
+    .prompt-explain{
+      font-size:.9rem;
+      color:#b0aba5;
+      border-top:1px solid var(--line);
+      padding-top:10px;
+      margin-top:10px;
+    }
+    .prompt-explain strong{color:#c9935f}
+    .prompt-explain p{margin:5px 0 0}
+    .formula{padding:20px;border-radius:20px;background:linear-gradient(135deg,rgba(212,155,98,.15),rgba(255,255,255,.025));border:1px solid rgba(212,155,98,.25);margin:14px 0}
+    .formula strong{font-family:"Space Grotesk";font-size:1.1rem}
+
+    /* LKPD */
+    .lkpd-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .lkpd-card{padding:26px}
+    .field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .name-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .field label{font-size:.82rem;color:#9d9892;display:block;margin-bottom:6px}
+    .field input,.field textarea,.field select{
+      width:100%;color:#f8f6f2;background:#101015;border:1px solid rgba(255,255,255,.08);border-radius:14px;
+      padding:11px 13px;outline:none;transition:.2s
+    }
+    .field textarea{min-height:100px;resize:vertical}
+    .field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(212,155,98,.6);box-shadow:0 0 0 4px rgba(212,155,98,.08)}
+    .full{grid-column:1/-1}
+    .activity{
+      margin-top:16px;padding:18px;border-radius:18px;background:rgba(255,255,255,.028);border:1px solid var(--line)
+    }
+    .activity h4{font-family:"Space Grotesk";margin:0 0 10px}
+    .table-wrap{overflow:auto}
+    table{width:100%;border-collapse:collapse;min-width:650px}
+    th,td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+    th{color:#d4a06e;font-size:.82rem}
+    td{color:#bcb7b0}
+    .tip{padding:13px 15px;border-left:3px solid var(--accent);background:rgba(212,155,98,.07);border-radius:0 12px 12px 0;color:#c7c1b9}
+
+    /* Highlight full prompt field */
+    .field-full-prompt{
+      background:linear-gradient(135deg,rgba(212,155,98,.08),rgba(255,255,255,.02));
+      border:1px dashed rgba(212,155,98,.4);
+      border-radius:18px;
+      padding:16px;
+      margin-top:6px;
+    }
+    .field-full-prompt label{color:var(--accent-2);font-weight:700;font-size:.88rem}
+    .field-full-prompt .hint{font-size:.78rem;color:#a49a8f;margin:4px 0 8px;display:block}
+    .field-full-prompt textarea{min-height:140px}
+
+    /* Results */
+    .result-panel{padding:22px;margin-top:16px;display:none}
+    .result-panel.show{display:block}
+    .result-header{display:flex;justify-content:space-between;gap:15px;align-items:center}
+    .result-grade{font-family:"Space Grotesk";font-size:2rem}
+
+    /* Footer */
+    footer{margin-top:90px;padding:30px 0 10px;border-top:1px solid var(--line);color:#89857f;text-align:center}
+    footer strong{color:#c6bdb5}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr;padding-top:48px}
+      .hero-visual{min-height:350px}
+      .test-wrap,.lkpd-grid{grid-template-columns:1fr}
+      .test-side{position:static}
+      .grid-4{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width: 760px){
+      :root{--navh:68px}
+      .navbar{height:68px}
+      .menu-btn{display:block}
+      .navlinks{
+        display:none;position:absolute;top:68px;left:0;right:0;padding:12px;
+        background:rgba(13,13,17,.98);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch
+      }
+      .navlinks.open{display:flex}
+      .navlinks a{text-align:center}
+      main{padding:0 15px 60px}
+      .section-head{display:block;margin-top:64px}
+      .section-head p{margin-top:7px}
+      .grid-2,.grid-3,.grid-4,.prompt-grid,.info-grid,.field-grid,.name-grid{grid-template-columns:1fr}
+      .full{grid-column:auto}
+      .hero h1{font-size:clamp(2.2rem,12vw,4.2rem)}
+      .hero-card{transform:none}
+      .result-header{display:block}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grain"></div>
+  <div class="blob one"></div>
+  <div class="blob two"></div>
+
+  <nav class="navbar">
+    <a href="#home" class="brand">
+      <div class="brand-mark"><i class="fa-solid fa-layer-group"></i></div>
+      <span>Multimedia<span style="color:var(--accent-2)">Lab</span></span>
+    </a>
+
+    <button class="menu-btn" id="menuBtn" aria-label="Buka menu"><i class="fa-solid fa-bars"></i></button>
+
+    <div class="navlinks" id="navLinks">
+      <a href="#pretest" class="nav-link">Pretest</a>
+      <a href="#materi" class="nav-link">Materi</a>
+      <a href="#lkpd" class="nav-link">LKPD</a>
+      <a href="#posttest" class="nav-link">Posttest</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="hero">
+      <div data-aos="fade-right">
+        <div class="eyebrow"><i class="fa-solid fa-wand-magic-sparkles"></i> Pembelajaran Interaktif • SMK Kriya Kulit</div>
+        <h1>Multimedia, Produksi, <span>Diseminasi</span> & Prompting AI</h1>
+        <p>
+          Pelajari cara menggabungkan elemen multimedia, merancang proses produksi, memilih saluran diseminasi,
+          dan menyusun prompt AI yang relevan untuk proyek promosi produk kriya kulit.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#pretest"><i class="fa-solid fa-play"></i> Mulai Pretest</a>
+          <a class="btn btn-ghost" href="#materi"><i class="fa-solid fa-book-open"></i> Jelajahi Materi</a>
+        </div>
+      </div>
+
+      <div class="hero-visual" data-aos="zoom-in">
+        <div class="hero-card">
+          <span class="eyebrow"><i class="fa-solid fa-lightbulb"></i> Learning Path</span>
+          <h3>Idea → Create → Share</h3>
+          <div class="mini">Dari konsep multimedia sampai strategi prompt dan diseminasi karya.</div>
+          <div class="hero-bars">
+            <div class="hero-bar"><span style="--w:86%"></span></div>
+            <div class="hero-bar"><span style="--w:72%"></span></div>
+            <div class="hero-bar"><span style="--w:93%"></span></div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:28px">
+            <span class="eyebrow"><i class="fa-solid fa-image"></i> Visual</span>
+            <span class="eyebrow"><i class="fa-solid fa-robot"></i> AI</span>
+            <span class="eyebrow"><i class="fa-solid fa-share-nodes"></i> Share</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRETEST -->
+    <section id="pretest">
+      <div class="section-head" data-aos="fade-up">
+        <div>
+          <div class="kicker">01 • Diagnostic</div>
+          <h2>Pretest</h2>
+        </div>
+        <p>10 soal pilihan ganda untuk memetakan pemahaman awal sebelum mempelajari materi.</p>
+      </div>
+
+      <div class="test-wrap">
+        <div class="card test-card" data-aos="fade-up">
+          <div class="q-meta">
+            <span id="preQuestionNo">Soal 1 dari 10</span>
+            <span id="preAnswered">0/10 terjawab</span>
+          </div>
+          <div class="progress"><span id="preProgress"></span></div>
+          <div class="question" id="preQuestion"></div>
+          <div class="options" id="preOptions"></div>
+          <div class="test-actions">
+            <button class="btn btn-ghost" id="prePrev"><i class="fa-solid fa-arrow-left"></i> Sebelumnya</button>
+            <button class="btn btn-primary" id="preNext">Berikutnya <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+          <div class="score-box" id="preScoreBox">
+            <div style="color:#7fe9bf;font-weight:800">PRETEST SELESAI</div>
+            <div class="score-big" id="preScore">0</div>
+            <div id="preScoreText" style="color:#b7b2ac"></div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px">
+              <button class="btn btn-primary" id="prePdf"><i class="fa-solid fa-file-pdf"></i> Download Nilai PDF</button>
+              <button class="btn btn-ghost" id="prePng"><i class="fa-solid fa-image"></i> Download Nilai PNG</button>
+              <button class="btn btn-ghost" id="preRetry"><i class="fa-solid fa-rotate"></i> Ulangi</button>
+            </div>
+          </div>
+        </div>
+
+        <aside class="card test-side" data-aos="fade-left">
+          <div class="side-stat"><small>Jumlah soal</small><strong>10 soal</strong></div>
+          <div class="side-stat"><small>Jenis</small><strong>Pilihan Ganda</strong></div>
+          <div class="side-stat"><small>Skor maksimal</small><strong>100</strong></div>
+          <div class="side-stat"><small>Bobot per soal</small><strong>10 poin</strong></div>
+          <div class="tip" style="margin-top:16px">Kerjakan mandiri. Setelah selesai, sistem akan menghitung nilai secara otomatis.</div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- MATERI -->
+    <section id="materi">
+      <div class="section-head" data-aos="fade-up">
+        <div>
+          <div class="kicker">02 • Explore</div>
+          <h2>Materi Pembelajaran</h2>
+        </div>
+        <p>Materi diringkas dan disusun menjadi bagian-bagian kecil agar mudah dipelajari secara bertahap.</p>
+      </div>
+
+      <div class="tabs" data-aos="fade-up">
+        <button class="tab-btn active" data-tab="multi"><i class="fa-solid fa-photo-film"></i> Multimedia</button>
+        <button class="tab-btn" data-tab="produksi"><i class="fa-solid fa-clapperboard"></i> Produksi</button>
+        <button class="tab-btn" data-tab="diseminasi"><i class="fa-solid fa-share-nodes"></i> Diseminasi</button>
+        <button class="tab-btn" data-tab="prompting"><i class="fa-solid fa-robot"></i> Prompting AI</button>
+      </div>
+
+      <div id="tab-multi" class="tab-panel active">
+        <div class="card material-card">
+          <h3>Apa itu Multimedia?</h3>
+          <p style="color:#bbb7b1">
+            Penggunaan komputer atau perangkat digital untuk menyajikan dan menggabungkan teks, suara, gambar,
+            animasi, dan video dengan alat bantu serta tautan sehingga pengguna dapat bernavigasi,
+            berinteraksi, dan berkomunikasi.
+          </p>
+          <div class="info-grid">
+            <div class="info-chip"><i class="fa-solid fa-font"></i><strong>Teks</strong><span>Judul produk, deskripsi bahan, harga.</span></div>
+            <div class="info-chip"><i class="fa-solid fa-image"></i><strong>Gambar</strong><span>Foto produk, logo, infografis perawatan.</span></div>
+            <div class="info-chip"><i class="fa-solid fa-microphone"></i><strong>Audio</strong><span>Musik latar dan voice over.</span></div>
+            <div class="info-chip"><i class="fa-solid fa-video"></i><strong>Video</strong><span>Proses pemotongan pola atau fashion show karya siswa.</span></div>
+            <div class="info-chip"><i class="fa-solid fa-film"></i><strong>Animasi</strong><span>Transisi atau animasi logo di awal video promosi.</span></div>
+            <div class="info-chip"><i class="fa-solid fa-hand-pointer"></i><strong>Interaktif</strong><span>Audiens dapat mengontrol elemen yang tersedia.</span></div>
+          </div>
+          <div class="grid grid-2" style="margin-top:16px">
+            <div class="card material-card" style="box-shadow:none">
+              <h3><i class="fa-solid fa-arrow-right-long"></i> Linear</h3>
+              <p style="color:#aaa59f">Berjalan berurutan tanpa interaksi audiens, misalnya video company profile bengkel kriya kulit.</p>
+            </div>
+            <div class="card material-card" style="box-shadow:none">
+              <h3><i class="fa-solid fa-hand-pointer"></i> Interaktif</h3>
+              <p style="color:#aaa59f">Audiens memiliki kontrol, misalnya katalog digital yang dapat diklik untuk melihat varian dan detail produk.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-produksi" class="tab-panel">
+        <div class="grid grid-3">
+          <div class="card material-card">
+            <div class="eyebrow">01</div>
+            <h3>Pra-produksi</h3>
+            <ul>
+              <li>Pencarian ide</li><li>Penulisan naskah</li><li>Storyboard</li><li>Penentuan jadwal</li><li>Persiapan alat</li>
+            </ul>
+            <p class="tip">Contoh: merencanakan video promosi tas kulit dengan target pasar, moodboard, kamera, dan tata cahaya.</p>
+          </div>
+          <div class="card material-card">
+            <div class="eyebrow">02</div>
+            <h3>Produksi</h3>
+            <ul>
+              <li>Pengambilan gambar</li><li>Perekaman suara</li><li>Pengumpulan bahan</li>
+            </ul>
+            <p class="tip">Contoh: pemotretan tas kulit dan merekam voice over tentang keunggulan bahan kulit pull-up.</p>
+          </div>
+          <div class="card material-card">
+            <div class="eyebrow">03</div>
+            <h3>Pasca-produksi</h3>
+            <ul>
+              <li>Editing</li><li>Penambahan efek</li><li>Color grading</li><li>Rendering</li>
+            </ul>
+            <p class="tip">Contoh: memotong rekaman yang tidak perlu, menyesuaikan warna tekstur kulit, dan menambahkan teks harga.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-diseminasi" class="tab-panel">
+        <div class="grid grid-2">
+          <div class="card material-card">
+            <h3>Apa itu Diseminasi?</h3>
+            <p style="color:#b8b4ae">
+              Proses penyebaran informasi, konten, atau karya multimedia kepada khalayak sasaran agar dapat dilihat,
+              dipahami, dan memberikan dampak.
+            </p>
+          </div>
+          <div class="card material-card">
+            <h3>Memilih Channel</h3>
+            <ul>
+              <li><strong>Instagram/Pinterest:</strong> cocok untuk katalog foto sepatu dan tas kulit.</li>
+              <li><strong>TikTok/YouTube Shorts:</strong> cocok untuk video behind the scene yang menarik dan berbasis tren.</li>
+              <li><strong>E-commerce/Website:</strong> saluran akhir untuk transaksi.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="grid grid-3" style="margin-top:16px">
+          <div class="card material-card"><h3>Penjadwalan</h3><p style="color:#aaa59f">Mengunggah pada jam ramai, misalnya pukul 19.00 ketika audiens bersantai.</p></div>
+          <div class="card material-card"><h3>SEO/Hashtag</h3><p style="color:#aaa59f">Menggunakan tagar spesifik seperti #KerajinanKulitLokal, #SepatuKulitAsli, #KriyaKulitSMK.</p></div>
+          <div class="card material-card"><h3>Kolaborasi</h3><p style="color:#aaa59f">Bekerja sama dengan influencer fashion lokal untuk mengulas produk.</p></div>
+        </div>
+      </div>
+
+      <div id="tab-prompting" class="tab-panel">
+        <div class="card material-card">
+          <h3>Prompting adalah...</h3>
+          <p style="color:#bcb7b0">
+            Proses memberikan instruksi, pertanyaan, atau masukan kepada model AI generatif agar menghasilkan teks,
+            gambar, suara, atau kode yang spesifik dan relevan. Kualitas hasil sangat bergantung pada kejelasan,
+            detail, dan struktur instruksi.
+          </p>
+
+          <div class="formula"><strong>Rumus dasar: Peran + Tugas + Konteks + Format</strong></div>
+
+          <div class="prompt-grid">
+            <!-- 1. Zero-shot -->
+            <div class="card prompt-card">
+              <div class="num">01</div>
+              <h4>Zero-shot prompting</h4>
+              <p class="prompt-def">Artinya: langsung memberi perintah tanpa contoh.</p>
+              <div class="prompt-example">
+                <strong>Contoh prompt konteks kulit:</strong>
+                <p>Jelaskan cara membuat dompet kulit dari kulit sapi full-grain.</p>
+              </div>
+              <div class="prompt-explain">
+                <strong>Penjelasan untuk jurusan kulit:</strong>
+                <p>Ini dipakai untuk mencari gambaran umum. Misalnya Anda baru ingin tahu tahapan membuat dompet kulit, belum butuh detail bahan, ukuran, atau teknik jahitan. Hasilnya biasanya masih umum, jadi cocok untuk brainstorming awal.</p>
+              </div>
+            </div>
+
+            <!-- 2. Role -->
+            <div class="card prompt-card">
+              <div class="num">02</div>
+              <h4>Role prompting</h4>
+              <p class="prompt-def">Artinya: memberi AI peran tertentu agar jawabannya lebih sesuai bidang.</p>
+              <div class="prompt-example">
+                <strong>Contoh prompt konteks kulit:</strong>
+                <p>Kamu adalah instruktur kriya kulit senior di jurusan Teknologi Pengolahan Kulit. Jelaskan cara membuat dompet kulit untuk pemula, gunakan istilah teknis yang tepat.</p>
+              </div>
+              <div class="prompt-explain">
+                <strong>Penjelasan untuk jurusan kulit:</strong>
+                <p>Dengan role ini, AI akan menjawab seperti pengrajin atau dosen kulit. Istilah seperti full-grain, skiving, burnishing, edge finishing, saddle stitch bisa muncul lebih tepat. Cocok untuk membuat modul praktikum atau panduan kerja.</p>
+              </div>
+            </div>
+
+            <!-- 3. Few-shot -->
+            <div class="card prompt-card">
+              <div class="num">03</div>
+              <h4>Few-shot prompting</h4>
+              <p class="prompt-def">Artinya: memberi beberapa contoh dulu, lalu AI diminta mengikuti pola.</p>
+              <div class="prompt-example">
+                <strong>Contoh prompt konteks kulit:</strong>
+                <p>Contoh 1: Dompet kartu — bahan: kulit sapi 1 mm, benang lilin, jarum. Langkah: buat pola, potong, haluskan tepi, jahit.
+Contoh 2: Sabuk kulit — bahan: kulit sapi 3 mm, buckle, rivet. Langkah: ukur lingkar pinggang, potong, buat lubang, pasang buckle.
+Sekarang buat Contoh 3: dompet lipat dengan kancing kuningan.</p>
+              </div>
+              <div class="prompt-explain">
+                <strong>Penjelasan untuk jurusan kulit:</strong>
+                <p>Teknik ini berguna kalau Anda ingin AI meniru format tabel, urutan langkah, atau gaya bahasa yang sudah ada. Misalnya Anda punya SOP pembuatan sabuk, lalu ingin AI membuat SOP serupa untuk dompet.</p>
+              </div>
+            </div>
+
+            <!-- 4. Chain-of-thought -->
+            <div class="card prompt-card">
+              <div class="num">04</div>
+              <h4>Chain-of-thought prompting</h4>
+              <p class="prompt-def">Artinya: meminta AI berpikir atau menjelaskan langkah demi langkah.</p>
+              <div class="prompt-example">
+                <strong>Contoh prompt konteks kulit:</strong>
+                <p>Susun langkah membuat dompet kulit langkah demi langkah, dari menyiapkan pola sampai finishing. Jelaskan alasan singkat setiap langkah, misalnya mengapa tepi kulit perlu dihaluskan dan mengapa jahitan harus dikunci.</p>
+              </div>
+              <div class="prompt-explain">
+                <strong>Penjelasan untuk jurusan kulit:</strong>
+                <p>Ini sangat cocok untuk laporan praktikum atau analisis proses. Anda tidak hanya dapat “apa” langkahnya, tapi juga “mengapa” langkah itu penting. Misalnya alasan skiving agar lipatan tidak tebal, atau burnishing agar tepi kulit rapi dan tahan lama.</p>
+              </div>
+            </div>
+
+            <!-- 5. Context & constraint -->
+            <div class="card prompt-card">
+              <div class="num">05</div>
+              <h4>Context dan constraint prompting</h4>
+              <p class="prompt-def">Artinya: memberi konteks dan batasan yang jelas.</p>
+              <div class="prompt-example">
+                <strong>Contoh prompt konteks kulit:</strong>
+                <p>Saya punya kulit sapi 20x30 cm, benang nilon, jarum, kancing kuningan, dan alat sederhana. Buat pola dompet untuk pemula, tanpa mesin jahit, selesai 3 jam, untuk 6 kartu.</p>
+              </div>
+              <div class="prompt-explain">
+                <strong>Penjelasan untuk jurusan kulit:</strong>
+                <p>Di jurusan kulit, bahan dan alat sering terbatas. Prompt seperti ini memaksa AI memberi solusi yang realistis: ukuran pola pas, teknik jahitan tangan, dan estimasi waktu masuk akal. Cocok untuk tugas proyek atau produksi kecil.</p>
+              </div>
+            </div>
+
+            <!-- 6. Format output -->
+            <div class="card prompt-card">
+              <div class="num">06</div>
+              <h4>Format output prompting</h4>
+              <p class="prompt-def">Artinya: menentukan bentuk jawaban.</p>
+              <div class="prompt-example">
+                <strong>Contoh prompt konteks kulit:</strong>
+                <p>Sajikan proses pembuatan dompet kulit dalam format:
+• Alat & bahan: tabel
+• Langkah: bernomor
+• Tips: bullet
+• Estimasi biaya: paragraf</p>
+              </div>
+              <div class="prompt-explain">
+                <strong>Penjelasan untuk jurusan kulit:</strong>
+                <p>Hasilnya lebih rapi dan siap dipakai. Anda bisa langsung menempelkannya ke laporan, modul, atau proposal produk. Format ini membantu memisahkan bahan, proses, dan tips finishing.</p>
+              </div>
+            </div>
+
+            <!-- 7. Iterative -->
+            <div class="card prompt-card">
+              <div class="num">07</div>
+              <h4>Iterative prompting</h4>
+              <p class="prompt-def">Artinya: memperbaiki prompt secara bertahap.</p>
+              <div class="prompt-example">
+                <strong>Contoh prompt lanjutan konteks kulit:</strong>
+                <p>Dari pola dompet tadi, ubah ukuran untuk kartu nama, tambah 2 slot kartu, ganti jahitan tangan dengan jahitan mesin, dan hitung kebutuhan benang.</p>
+              </div>
+              <div class="prompt-explain">
+                <strong>Penjelasan untuk jurusan kulit:</strong>
+                <p>Ini seperti revisi desain. Anda mulai dari pola dasar, lalu minta AI menyesuaikan ukuran, menambah fitur, atau mengganti teknik. Sangat berguna saat mengembangkan produk kulit secara bertahap.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LKPD -->
+    <section id="lkpd">
+      <div class="section-head" data-aos="fade-up">
+        <div>
+          <div class="kicker">03 • Create</div>
+          <h2>LKPD Interaktif</h2>
+        </div>
+        <p>Isi rancangan poster promosi produk kriya kulit. Setelah selesai, unduh LKPD dalam format PDF.</p>
+      </div>
+
+      <div class="lkpd-grid">
+        <div class="card lkpd-card" data-aos="fade-up">
+          <div class="eyebrow"><i class="fa-solid fa-id-card"></i> Identitas Peserta</div>
+          <h3 style="font-family:Space Grotesk">Data LKPD</h3>
+          <div class="field-grid">
+            <div class="field full">
+              <div class="name-grid">
+                <div>
+                  <label>Nama Anggota 1</label>
+                  <input id="lkNama1">
+                </div>
+                <div>
+                  <label>Nama Anggota 2</label>
+                  <input id="lkNama2">
+                </div>
+                <div>
+                  <label>Nama Anggota 3</label>
+                  <input id="lkNama3">
+                </div>
+              </div>
+            </div>
+            <div class="field"><label>Kelas</label><input id="lkKelas"></div>
+            <div class="field"><label>Kelompok</label><input id="lkKelompok"></div>
+            <div class="field"><label>Tanggal</label><input id="lkTanggal" type="date"></div>
+          </div>
+
+          <div class="activity">
+            <h4>Tujuan</h4>
+            <ul>
+              <li>Memahami elemen dan jenis multimedia.</li>
+              <li>Menerapkan tahapan pra-produksi, produksi, dan pasca-produksi.</li>
+              <li>Menentukan strategi diseminasi yang tepat.</li>
+              <li>Menyusun prompt AI untuk membuat poster promosi produk kulit.</li>
+              <li>Menghasilkan rancangan poster promosi yang komunikatif dan etis.</li>
+            </ul>
+          </div>
+
+          <div class="activity">
+            <h4>Alat & Bahan</h4>
+            <div class="tip">HP/laptop, internet, serta aplikasi AI gambar/teks seperti Canva AI, Bing Image Creator, ChatGPT, Gemini, dan lain-lain.</div>
+          </div>
+        </div>
+
+        <div class="card lkpd-card" data-aos="fade-up" data-aos-delay="80">
+          <div class="eyebrow"><i class="fa-solid fa-box-open"></i> Identitas Produk</div>
+          <h3 style="font-family:Space Grotesk">1. Produk Kriya Kulit</h3>
+          <div class="field-grid">
+            <div class="field"><label>Nama produk</label><input id="lkProduk"></div>
+            <div class="field"><label>Jenis produk</label><input id="lkJenis"></div>
+            <div class="field"><label>Bahan</label><input id="lkBahan"></div>
+            <div class="field"><label>Harga</label><input id="lkHarga"></div>
+            <div class="field full"><label>Keunggulan</label><textarea id="lkKeunggulan"></textarea></div>
+          </div>
+
+          <div class="activity">
+            <h4>2. Target Audiens & Saluran Diseminasi</h4>
+            <div class="field-grid">
+              <div class="field"><label>Usia</label><input id="lkUsia"></div>
+              <div class="field"><label>Jenis kelamin / segmen</label><input id="lkSegmen"></div>
+              <div class="field"><label>Minat / gaya hidup</label><input id="lkMinat"></div>
+              <div class="field"><label>Platform utama</label>
+                <select id="lkPlatform">
+                  <option value="">Pilih platform</option>
+                  <option>Instagram</option><option>Pinterest</option><option>TikTok</option>
+                  <option>YouTube Shorts</option><option>E-commerce</option><option>Website</option>
+                </select>
+              </div>
+              <div class="field full"><label>Alasan pemilihan platform</label><textarea id="lkAlasan"></textarea></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card lkpd-card" data-aos="fade-up">
+          <div class="eyebrow"><i class="fa-solid fa-bullhorn"></i> Pesan Poster</div>
+          <h3 style="font-family:Space Grotesk">3. Tujuan & Pesan Utama</h3>
+          <div class="field-grid">
+            <div class="field full"><label>Tujuan poster</label><textarea id="lkTujuan"></textarea></div>
+            <div class="field"><label>Headline</label><input id="lkHeadline"></div>
+            <div class="field"><label>Subheadline</label><input id="lkSub"></div>
+            <div class="field"><label>Call to Action (CTA)</label><input id="lkCTA"></div>
+            <div class="field"><label>Hashtag</label><input id="lkHashtag"></div>
+          </div>
+
+          <div class="activity">
+            <h4>4. Prompt AI</h4>
+            <div class="field-grid">
+              <div class="field full"><label>Prompt Gambar Poster</label><textarea id="lkPromptGambar"></textarea></div>
+              <div class="field full"><label>Prompt Teks</label><textarea id="lkPromptTeks"></textarea></div>
+              <div class="field"><label>Peran</label><input id="lkPeran"></div>
+              <div class="field"><label>Tugas</label><input id="lkTugas"></div>
+              <div class="field"><label>Konteks</label><input id="lkKonteks"></div>
+              <div class="field"><label>Format</label><input id="lkFormat"></div>
+            </div>
+
+            <!-- SOAL FULL PROMPT UNTUK GENERATE POSTER -->
+            <div class="field-full-prompt">
+              <label for="lkFullPrompt"><i class="fa-solid fa-wand-magic-sparkles"></i> Soal: Full Prompt untuk Generate Poster</label>
+              <span class="hint">Susunlah satu prompt lengkap (Peran + Tugas + Konteks + Format) yang siap kamu tempel ke AI image generator untuk menghasilkan poster promosi produk kriya kulit di atas.</span>
+              <textarea id="lkFullPrompt" placeholder="Tulis full prompt kamu di sini..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="card lkpd-card" data-aos="fade-up">
+          <div class="eyebrow"><i class="fa-solid fa-share-nodes"></i> Diseminasi</div>
+          <h3 style="font-family:Space Grotesk">5. Strategi Diseminasi</h3>
+          <div class="field-grid">
+            <div class="field"><label>Channel</label><input id="lkChannel"></div>
+            <div class="field"><label>Jadwal unggah</label><input id="lkJadwal"></div>
+            <div class="field full"><label>Hashtag</label><input id="lkHash2"></div>
+            <div class="field full"><label>CTA</label><input id="lkCTA2"></div>
+          </div>
+
+          <div class="activity">
+            <h4>Checklist Kesiapan</h4>
+            <label style="display:flex;gap:10px;align-items:center;margin:10px 0;color:#c2bdb6"><input type="checkbox" class="lkcheck"> Identitas produk sudah jelas</label>
+            <label style="display:flex;gap:10px;align-items:center;margin:10px 0;color:#c2bdb6"><input type="checkbox" class="lkcheck"> Target audiens dan channel sudah sesuai</label>
+            <label style="display:flex;gap:10px;align-items:center;margin:10px 0;color:#c2bdb6"><input type="checkbox" class="lkcheck"> Prompt mengikuti Peran + Tugas + Konteks + Format</label>
+            <label style="display:flex;gap:10px;align-items:center;margin:10px 0;color:#c2bdb6"><input type="checkbox" class="lkcheck"> Pesan poster komunikatif dan etis</label>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+            <button class="btn btn-primary" id="downloadLkpd"><i class="fa-solid fa-file-pdf"></i> Download LKPD PDF</button>
+            <button class="btn btn-ghost" id="clearLkpd"><i class="fa-solid fa-eraser"></i> Bersihkan Form</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- POSTTEST -->
+    <section id="posttest">
+      <div class="section-head" data-aos="fade-up">
+        <div>
+          <div class="kicker">04 • Measure</div>
+          <h2>Posttest</h2>
+        </div>
+        <p>Kerjakan kembali 10 soal berdasarkan materi yang telah dipelajari. Sistem akan menghitung hasil secara otomatis.</p>
+      </div>
+
+      <div class="test-wrap">
+        <div class="card test-card" data-aos="fade-up">
+          <div class="q-meta">
+            <span id="postQuestionNo">Soal 1 dari 10</span>
+            <span id="postAnswered">0/10 terjawab</span>
+          </div>
+          <div class="progress"><span id="postProgress"></span></div>
+          <div class="question" id="postQuestion"></div>
+          <div class="options" id="postOptions"></div>
+          <div class="test-actions">
+            <button class="btn btn-ghost" id="postPrev"><i class="fa-solid fa-arrow-left"></i> Sebelumnya</button>
+            <button class="btn btn-primary" id="postNext">Berikutnya <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+          <div class="score-box" id="postScoreBox">
+            <div style="color:#7fe9bf;font-weight:800">POSTTEST SELESAI</div>
+            <div class="score-big" id="postScore">0</div>
+            <div id="postScoreText" style="color:#b7b2ac"></div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px">
+              <button class="btn btn-primary" id="postPdf"><i class="fa-solid fa-file-pdf"></i> Download Nilai PDF</button>
+              <button class="btn btn-ghost" id="postPng"><i class="fa-solid fa-image"></i> Download Nilai PNG</button>
+              <button class="btn btn-ghost" id="postRetry"><i class="fa-solid fa-rotate"></i> Ulangi</button>
+            </div>
+          </div>
+        </div>
+
+        <aside class="card test-side" data-aos="fade-left">
+          <div class="side-stat"><small>Jumlah soal</small><strong>10 soal</strong></div>
+          <div class="side-stat"><small>Jenis</small><strong>Pilihan Ganda</strong></div>
+          <div class="side-stat"><small>Skor maksimal</small><strong>100</strong></div>
+          <div class="side-stat"><small>Bobot per soal</small><strong>10 poin</strong></div>
+          <div class="tip" style="margin-top:16px">Gunakan hasil posttest sebagai refleksi setelah menyelesaikan materi dan LKPD.</div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><strong>MultimediaLab</strong> • Website pembelajaran interaktif berbasis materi ajar yang diberikan.</p>
+    <p style="font-size:.85rem">Dibuat sebagai single-page HTML • CSS + JavaScript + CDN</p>
+  </footer>
+
+  <!-- CDN: jsPDF & html2canvas -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <script>
+    // -------------------------
+    // Initialization
+    // -------------------------
+    AOS.init({duration:700, once:true, offset:80});
+
+    const $ = (id) => document.getElementById(id);
+
+    // Mobile menu
+    $("menuBtn").addEventListener("click", () => {
+      $("navLinks").classList.toggle("open");
+    });
+    document.querySelectorAll(".nav-link").forEach(a => {
+      a.addEventListener("click", () => $("navLinks").classList.remove("open"));
+    });
+
+    // Active nav on scroll
+    const sections = ["pretest","materi","lkpd","posttest"];
+    window.addEventListener("scroll", () => {
+      const pos = window.scrollY + 140;
+      document.querySelectorAll(".nav-link").forEach(link => link.classList.remove("active"));
+      sections.forEach(id => {
+        const el = $(id);
+        if(el && pos >= el.offsetTop && pos < el.offsetTop + el.offsetHeight){
+          const link = document.querySelector(`.nav-link[href="#${id}"]`);
+          if(link) link.classList.add("active");
+        }
+      });
+    });
+
+    // Material tabs
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+        $("tab-" + btn.dataset.tab).classList.add("active");
+      });
+    });
+
+    // -------------------------
+    // Quiz data from source file
+    // -------------------------
+    const questions = [
+      {
+        q:"Penggunaan komputer atau perangkat digital untuk menggabungkan teks, suara, gambar, animasi, dan video sehingga pengguna dapat bernavigasi dan berinteraksi disebut…",
+        options:["Diseminasi","Multimedia","Produksi","Prompting","Storyboard"], answer:1
+      },
+      {
+        q:"Elemen multimedia yang paling tepat untuk menjelaskan detail jahitan tas kulit secara verbal adalah…",
+        options:["Teks","Audio voice over","Animasi","Gambar","Video"], answer:1
+      },
+      {
+        q:"Katalog digital interaktif yang memungkinkan pelanggan mengklik gambar dompet untuk melihat varian warna termasuk jenis multimedia…",
+        options:["Linear","Interaktif","Statis","Pasif","Manual"], answer:1
+      },
+      {
+        q:"Tahap paling krusial sebelum eksekusi, meliputi pencarian ide, penulisan naskah, storyboard, jadwal, dan persiapan alat adalah…",
+        options:["Pra-produksi","Produksi","Pasca-produksi","Diseminasi","Prompting"], answer:0
+      },
+      {
+        q:"Contoh kegiatan pasca-produksi dalam pembuatan video promosi tas kulit adalah…",
+        options:["Menyusun storyboard","Memotret tas di studio","Color grading dan rendering","Menentukan target pasar","Mencari moodboard"], answer:2
+      },
+      {
+        q:"Platform yang sangat visual dan cocok untuk katalog foto produk sepatu dan tas kulit adalah…",
+        options:["Instagram/Pinterest","Email kantor","Radio","Koran","Forum coding"], answer:0
+      },
+      {
+        q:"Penggunaan tagar #KerajinanKulitLokal, #SepatuKulitAsli, #KriyaKulitSMK termasuk strategi…",
+        options:["Penjadwalan konten","Optimalisasi SEO/hashtag","Kolaborasi","Produksi","Storyboard"], answer:1
+      },
+      {
+        q:"Rumus dasar prompting untuk AI generatif adalah…",
+        options:["Peran + Tugas + Konteks + Format","Ide + Naskah + Storyboard + Alat","Teks + Audio + Gambar + Video","Pra + Produksi + Pasca + Diseminasi","Linear + Interaktif + Statis + Dinamis"], answer:0
+      },
+      {
+        q:"Contoh prompt gambar yang baik harus memuat…",
+        options:["Hanya “buatkan poster kulit”","Subjek, gaya, latar, pencahayaan, dan detail format","Nama siswa dan kelas","Harga produk saja","Jumlah pembeli"], answer:1
+      },
+      {
+        q:"Dalam produksi video promosi, merekam voice over tentang keunggulan kulit pull-up termasuk tahap…",
+        options:["Pra-produksi","Produksi","Pasca-produksi","Diseminasi","Evaluasi"], answer:1
+      }
+    ];
+
+    // -------------------------
+    // Quiz Engine
+    // -------------------------
+    function QuizEngine(cfg){
+      this.container = cfg.container;
+      this.questionEl = $(cfg.questionId);
+      this.optionsEl = $(cfg.optionsId);
+      this.noEl = $(cfg.noId);
+      this.answeredEl = $(cfg.answeredId);
+      this.progressEl = $(cfg.progressId);
+      this.prevBtn = $(cfg.prevId);
+      this.nextBtn = $(cfg.nextId);
+      this.scoreBox = $(cfg.scoreBoxId);
+      this.scoreEl = $(cfg.scoreId);
+      this.scoreTextEl = $(cfg.scoreTextId);
+      this.pdfBtn = $(cfg.pdfId);
+      this.pngBtn = $(cfg.pngId);
+      this.retryBtn = $(cfg.retryId);
+      this.label = cfg.label;
+      this.current = 0;
+      this.answers = Array(questions.length).fill(null);
+      this.done = false;
+      this.score = 0;
+
+      this.render();
+      this.prevBtn.addEventListener("click", () => this.prev());
+      this.nextBtn.addEventListener("click", () => this.next());
+      this.retryBtn.addEventListener("click", () => this.reset());
+      this.pdfBtn.addEventListener("click", () => downloadScorePDF(this));
+      this.pngBtn.addEventListener("click", () => downloadScorePNG(this));
+    }
+
+    QuizEngine.prototype.render = function(){
+      const item = questions[this.current];
+      this.noEl.textContent = `Soal ${this.current+1} dari ${questions.length}`;
+      this.answeredEl.textContent = `${this.answers.filter(v => v !== null).length}/${questions.length} terjawab`;
+      this.progressEl.style.width = ((this.current) / (questions.length-1) * 100) + "%";
+      this.questionEl.textContent = item.q;
+      this.optionsEl.innerHTML = "";
+
+      item.options.forEach((opt, i) => {
+        const b = document.createElement("button");
+        b.className = "option" + (this.answers[this.current] === i ? " selected" : "");
+        b.innerHTML = `<span class="letter">${String.fromCharCode(65+i)}</span><span>${opt}</span>`;
+        b.addEventListener("click", () => {
+          this.answers[this.current] = i;
+          this.render();
+        });
+        this.optionsEl.appendChild(b);
+      });
+
+      this.prevBtn.disabled = this.current === 0;
+      this.prevBtn.style.opacity = this.current === 0 ? .45 : 1;
+      this.nextBtn.innerHTML = this.current === questions.length-1
+        ? 'Selesaikan <i class="fa-solid fa-check"></i>'
+        : 'Berikutnya <i class="fa-solid fa-arrow-right"></i>';
+    };
+
+    QuizEngine.prototype.prev = function(){
+      if(this.current > 0){ this.current--; this.render(); }
+    };
+
+    QuizEngine.prototype.next = function(){
+      if(this.answers[this.current] === null){
+        Swal.fire({icon:"info",title:"Belum dipilih",text:"Pilih salah satu jawaban terlebih dahulu.",background:"#17171e",color:"#f6f2eb",confirmButtonColor:"#b87543"});
+        return;
+      }
+      if(this.current < questions.length-1){
+        this.current++; this.render();
+      }else{
+        this.finish();
+      }
+    };
+
+    QuizEngine.prototype.finish = function(){
+      this.score = this.answers.reduce((sum, val, i) => sum + (val === questions[i].answer ? 10 : 0), 0);
+      const correct = this.score / 10;
+      this.done = true;
+      this.scoreEl.textContent = this.score;
+      this.scoreTextEl.textContent = `${correct} dari ${questions.length} jawaban benar.`;
+      this.scoreBox.classList.add("show");
+      this.nextBtn.disabled = true;
+      this.prevBtn.disabled = true;
+
+      Swal.fire({
+        icon: this.score >= 75 ? "success" : "info",
+        title: this.label + " selesai!",
+        html: `<strong style="font-size:2rem">${this.score}</strong><br><span>Jawaban benar: ${correct}/${questions.length}</span>`,
+        background:"#17171e", color:"#f6f2eb", confirmButtonColor:"#b87543"
+      });
+      localStorage.setItem(this.label + "_score", JSON.stringify({
+        score:this.score, correct, at:new Date().toLocaleString("id-ID")
+      }));
+    };
+
+    QuizEngine.prototype.reset = function(){
+      this.current = 0;
+      this.answers = Array(questions.length).fill(null);
+      this.done = false;
+      this.score = 0;
+      this.scoreBox.classList.remove("show");
+      this.nextBtn.disabled = false;
+      this.prevBtn.disabled = false;
+      this.render();
+      document.getElementById(this.container).scrollIntoView({behavior:"smooth",block:"start"});
+    };
+
+    // Instantiate
+    const preQuiz = new QuizEngine({
+      container:"pretest", label:"Pretest",
+      questionId:"preQuestion", optionsId:"preOptions", noId:"preQuestionNo", answeredId:"preAnswered",
+      progressId:"preProgress", prevId:"prePrev", nextId:"preNext", scoreBoxId:"preScoreBox", scoreId:"preScore",
+      scoreTextId:"preScoreText", pdfId:"prePdf", pngId:"prePng", retryId:"preRetry"
+    });
+
+    const postQuiz = new QuizEngine({
+      container:"posttest", label:"Posttest",
+      questionId:"postQuestion", optionsId:"postOptions", noId:"postQuestionNo", answeredId:"postAnswered",
+      progressId:"postProgress", prevId:"postPrev", nextId:"postNext", scoreBoxId:"postScoreBox", scoreId:"postScore",
+      scoreTextId:"postScoreText", pdfId:"postPdf", pngId:"postPng", retryId:"postRetry"
+    });
+
+    // -------------------------
+    // Download score PDF / PNG
+    // -------------------------
+    function scoreCanvas(engine){
+      const w = 1100, h = 700;
+      const c = document.createElement("canvas");
+      c.width=w;c.height=h;
+      const ctx=c.getContext("2d");
+      const grad=ctx.createLinearGradient(0,0,w,h);
+      grad.addColorStop(0,"#201811"); grad.addColorStop(1,"#0d0d10");
+      ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+      ctx.fillStyle="#f2c28f";ctx.font="700 30px DM Sans, Arial";ctx.fillText("MULTIMEDIALAB",70,80);
+      ctx.fillStyle="#ffffff";ctx.font="700 54px Space Grotesk, Arial";ctx.fillText(engine.label,70,155);
+      ctx.fillStyle="#a7a4a0";ctx.font="500 22px DM Sans, Arial";ctx.fillText("Hasil penilaian pembelajaran",70,195);
+
+      ctx.fillStyle="#ffffff";ctx.font="700 145px Space Grotesk, Arial";
+      ctx.fillText(String(engine.score),70,390);
+      ctx.fillStyle="#d49b62";ctx.font="700 28px DM Sans, Arial";
+      ctx.fillText("NILAI / 100",75,435);
+
+      const correct=engine.score/10;
+      ctx.fillStyle="#bbb7b0";ctx.font="500 24px DM Sans, Arial";
+      ctx.fillText(`Jawaban benar: ${correct} dari ${questions.length}`,70,500);
+      ctx.fillText(`Waktu: ${new Date().toLocaleString("id-ID")}`,70,545);
+
+      ctx.fillStyle="rgba(255,255,255,.06)";ctx.roundRect(70,590,960,1,1);ctx.fill();
+      ctx.fillStyle="#8f8b87";ctx.font="500 18px DM Sans, Arial";
+      ctx.fillText("Website pembelajaran interaktif • Materi Multimedia, Produksi, Diseminasi, dan Prompting",70,630);
+      return c;
+    }
+
+    async function downloadScorePNG(engine){
+      const c = scoreCanvas(engine);
+      const a=document.createElement("a");
+      a.download=`hasil-${engine.label.toLowerCase()}.png`;
+      a.href=c.toDataURL("image/png");
+      a.click();
+    }
+
+    async function downloadScorePDF(engine){
+      const c = scoreCanvas(engine);
+      const {jsPDF}=window.jspdf;
+      const pdf=new jsPDF({orientation:"landscape",unit:"px",format:[c.width,c.height]});
+      pdf.addImage(c.toDataURL("image/png"),"PNG",0,0,c.width,c.height);
+      pdf.save(`hasil-${engine.label.toLowerCase()}.pdf`);
+    }
+
+    // -------------------------
+    // LKPD helpers
+    // -------------------------
+    const lkFields = [
+      ["Nama Anggota 1","lkNama1"],["Nama Anggota 2","lkNama2"],["Nama Anggota 3","lkNama3"],
+      ["Kelas","lkKelas"],["Kelompok","lkKelompok"],["Tanggal","lkTanggal"],
+      ["Nama produk","lkProduk"],["Jenis produk","lkJenis"],["Bahan","lkBahan"],["Harga","lkHarga"],
+      ["Keunggulan","lkKeunggulan"],["Usia","lkUsia"],["Jenis kelamin / segmen","lkSegmen"],["Minat / gaya hidup","lkMinat"],
+      ["Platform utama","lkPlatform"],["Alasan pemilihan platform","lkAlasan"],["Tujuan poster","lkTujuan"],["Headline","lkHeadline"],
+      ["Subheadline","lkSub"],["Call to Action","lkCTA"],["Hashtag","lkHashtag"],["Prompt Gambar Poster","lkPromptGambar"],
+      ["Prompt Teks","lkPromptTeks"],["Peran","lkPeran"],["Tugas","lkTugas"],["Konteks","lkKonteks"],["Format","lkFormat"],
+      ["Full Prompt untuk Generate Poster","lkFullPrompt"],
+      ["Channel","lkChannel"],["Jadwal unggah","lkJadwal"],["Hashtag Diseminasi","lkHash2"],["CTA Diseminasi","lkCTA2"]
+    ];
+
+    function collectLKPD(){
+      const result={};
+      lkFields.forEach(([label,id]) => result[label] = ($(id)?.value || "").trim());
+      result["Checklist"] = [...document.querySelectorAll(".lkcheck")].map(x=>x.checked ? "✓" : "○").join("  ");
+      return result;
+    }
+
+    // Local save on input
+    document.querySelectorAll("#lkpd input,#lkpd textarea,#lkpd select").forEach(el => {
+      el.addEventListener("input", () => {
+        if(el.id) localStorage.setItem("lkpd_"+el.id, el.value);
+      });
+    });
+    document.querySelectorAll(".lkcheck").forEach((el,i) => {
+      el.addEventListener("change",()=>localStorage.setItem("lkcheck_"+i,el.checked));
+    });
+    // Restore saved form
+    window.addEventListener("DOMContentLoaded",()=>{
+      lkFields.forEach(([label,id])=>{
+        const v=localStorage.getItem("lkpd_"+id);
+        if(v!==null && $(id)) $(id).value=v;
+      });
+      document.querySelectorAll(".lkcheck").forEach((el,i)=>{
+        const v=localStorage.getItem("lkcheck_"+i);
+        if(v!==null) el.checked=v==="true";
+      });
+      const date=$("#lkTanggal");
+      if(date && !date.value) date.value=new Date().toISOString().slice(0,10);
+    });
+
+    $("clearLkpd").addEventListener("click", async ()=>{
+      const ok=await Swal.fire({
+        icon:"warning",title:"Bersihkan form?",text:"Semua isian LKPD akan dihapus dari halaman ini.",
+        showCancelButton:true,confirmButtonText:"Ya, bersihkan",cancelButtonText:"Batal",
+        background:"#17171e",color:"#f6f2eb",confirmButtonColor:"#b87543"
+      });
+      if(!ok.isConfirmed) return;
+      lkFields.forEach(([_,id])=>{ if($(id)) $(id).value=""; localStorage.removeItem("lkpd_"+id); });
+      document.querySelectorAll(".lkcheck").forEach((el,i)=>{el.checked=false;localStorage.removeItem("lkcheck_"+i)});
+    });
+
+    // LKPD PDF using jsPDF and compact text flow
+    $("downloadLkpd").addEventListener("click", ()=>{
+      const data=collectLKPD();
+      const {jsPDF}=window.jspdf;
+      const pdf=new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
+      const margin=16;
+      let y=18;
+      const pageH=297;
+      const maxW=178;
+
+      const ensureSpace=(need=8)=>{
+        if(y+need>pageH-15){pdf.addPage();y=18;}
+      };
+
+      // Header
+      pdf.setFillColor(44,30,21); pdf.roundedRect(margin,10,maxW,28,4,4,"F");
+      pdf.setTextColor(245,222,199); pdf.setFont("helvetica","bold"); pdf.setFontSize(17);
+      pdf.text("LKPD — PERENCANAAN POSTER PROMOSI",margin+8,21);
+      pdf.setFont("helvetica","normal"); pdf.setFontSize(9); pdf.setTextColor(215,203,193);
+      pdf.text("Produk Kriya Kulit dengan Prompting AI",margin+8,27);
+      y=49;
+
+      const addBlock=(title,fields)=>{
+        ensureSpace(14);
+        pdf.setTextColor(150,95,55);pdf.setFont("helvetica","bold");pdf.setFontSize(11);pdf.text(title,margin,y);y+=6;
+        fields.forEach(([label,key])=>{
+          const val = data[key] || "—";
+          pdf.setTextColor(65,62,59);pdf.setFont("helvetica","bold");pdf.setFontSize(9);
+          const labelLine=`${label}:`;
+          pdf.text(labelLine,margin,y);
+          const lines=pdf.splitTextToSize(String(val),maxW-32);
+          pdf.setFont("helvetica","normal");
+          pdf.text(lines,margin+32,y);
+          y += Math.max(5, lines.length*4.4)+2;
+          ensureSpace(9);
+        });
+        y+=2;
+      };
+
+      addBlock("Identitas Peserta",[
+        ["Nama Anggota 1","Nama Anggota 1"],
+        ["Nama Anggota 2","Nama Anggota 2"],
+        ["Nama Anggota 3","Nama Anggota 3"],
+        ["Kelas","Kelas"],["Kelompok","Kelompok"],["Tanggal","Tanggal"]
+      ]);
+      addBlock("1. Identitas Produk",[
+        ["Nama produk","Nama produk"],["Jenis produk","Jenis produk"],["Bahan","Bahan"],["Keunggulan","Keunggulan"],["Harga","Harga"]
+      ]);
+      addBlock("2. Target Audiens & Saluran Diseminasi",[
+        ["Usia","Usia"],["Jenis kelamin / segmen","Jenis kelamin / segmen"],["Minat / gaya hidup","Minat / gaya hidup"],
+        ["Platform utama","Platform utama"],["Alasan pemilihan platform","Alasan pemilihan platform"]
+      ]);
+      addBlock("3. Tujuan & Pesan Utama",[
+        ["Tujuan poster","Tujuan poster"],["Headline","Headline"],["Subheadline","Subheadline"],["Call to Action","Call to Action"],["Hashtag","Hashtag"]
+      ]);
+      addBlock("4. Prompt AI",[
+        ["Prompt Gambar Poster","Prompt Gambar Poster"],["Prompt Teks","Prompt Teks"],
+        ["Peran","Peran"],["Tugas","Tugas"],["Konteks","Konteks"],["Format","Format"],
+        ["Full Prompt untuk Generate Poster","Full Prompt untuk Generate Poster"]
+      ]);
+      addBlock("5. Strategi Diseminasi",[
+        ["Channel","Channel"],["Jadwal unggah","Jadwal unggah"],["Hashtag Diseminasi","Hashtag Diseminasi"],["CTA Diseminasi","CTA Diseminasi"]
+      ]);
+      addBlock("Checklist Kesiapan", [["Status","Checklist"]]);
+
+      // Purpose and tools reference
+      ensureSpace(20);
+      pdf.setTextColor(150,95,55);pdf.setFont("helvetica","bold");pdf.text("Tujuan LKPD",margin,y);y+=6;
+      pdf.setFont("helvetica","normal");pdf.setTextColor(75,72,68);pdf.setFontSize(8.5);
+      const purpose="Memahami elemen dan jenis multimedia; menerapkan tahapan pra-produksi, produksi, dan pasca-produksi; menentukan strategi diseminasi; menyusun prompt AI; serta menghasilkan rancangan poster yang komunikatif dan etis.";
+      const pLines=pdf.splitTextToSize(purpose,maxW);pdf.text(pLines,margin,y);y+=pLines.length*4.1+5;
+
+      ensureSpace(12);
+      pdf.setFont("helvetica","bold");pdf.setTextColor(150,95,55);pdf.text("Alat & Bahan",margin,y);y+=6;
+      pdf.setFont("helvetica","normal");pdf.setTextColor(75,72,68);
+      pdf.text(pdf.splitTextToSize("HP/laptop, internet, serta aplikasi AI gambar/teks: Canva AI, Bing Image Creator, ChatGPT, Gemini, dan lain-lain.",maxW),margin,y);
+
+      pdf.save("LKPD_Perencanaan_Poster_Kriya_Kulit.pdf");
+    });
+  </script>
+</body>
+</html>
